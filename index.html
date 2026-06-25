@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Prometheus RECRUIT</title>
+  <title>Prometheus Recruit | Beverage Network</title>
   <style>
     :root {
       color-scheme: light;
@@ -408,6 +408,60 @@
     .pill.blue {
       color: var(--brand-dark);
       background: var(--blue-soft);
+    }
+
+    .inline-edit,
+    .inline-select {
+      width: 100%;
+      min-width: 120px;
+      min-height: 34px;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      padding: 6px 8px;
+      background: transparent;
+      color: var(--ink);
+    }
+
+    .inline-edit:hover,
+    .inline-edit:focus,
+    .inline-select:hover,
+    .inline-select:focus {
+      border-color: var(--line);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(23, 107, 135, 0.08);
+      outline: none;
+    }
+
+    .status-control {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 220px;
+    }
+
+    .mini-btn {
+      width: 30px;
+      height: 30px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #ffffff;
+      color: var(--brand-dark);
+      display: inline-grid;
+      place-items: center;
+      font-weight: 900;
+    }
+
+    .mini-btn:disabled {
+      color: #aeb8c2;
+      background: #f2f5f7;
+      cursor: not-allowed;
+    }
+
+    .row-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 132px;
     }
 
     .list {
@@ -857,12 +911,12 @@
 </head>
 <body>
   <div class="app">
-    <aside class="sidebar" id="sidebar" aria-label="Prometheus RECRUIT navigation">
+    <aside class="sidebar" id="sidebar" aria-label="Prometheus Recruit navigation">
       <div class="brand">
-        <div class="mark">PB</div>
+        <div class="mark">P</div>
         <div>
-          <strong>Prometheus RECRUIT</strong>
-          <span>Beverage Network</span>
+          <strong>Prometheus Recruit</strong>
+          <span>Beverage Network CRM</span>
         </div>
       </div>
 
@@ -902,7 +956,7 @@
       </nav>
 
       <div class="side-panel">
-        <p><strong>Build status:</strong> Prototype data, workflows, intake, and schema are wired in this single page.</p>
+        <p><strong>Beverage Network:</strong> Click to edit records, move statuses, manage pipeline, and build reports.</p>
         <button class="primary-action" data-view="intake">Add candidate</button>
       </div>
     </aside>
@@ -913,8 +967,8 @@
           <svg viewBox="0 0 24 24" fill="none" class="icon" aria-hidden="true"><path d="M4 6h16v2H4V6Zm0 5h16v2H4v-2Zm0 5h16v2H4v-2Z" fill="currentColor"/></svg>
         </button>
         <div class="page-title">
-          <h1 id="pageHeading">Recruiting command center</h1>
-          <p id="pageSubtitle">Manage candidates, clients, pipeline movement, and operating metrics from one workspace.</p>
+          <h1 id="pageHeading">Beverage Network command center</h1>
+          <p id="pageSubtitle">Manage beverage candidates, clients, pipeline movement, and operating metrics from one workspace.</p>
         </div>
         <label class="searchbar" aria-label="Search platform">
           <svg viewBox="0 0 24 24" fill="none" class="icon" aria-hidden="true"><path d="m20.7 19.3-4.2-4.2a7 7 0 1 0-1.4 1.4l4.2 4.2 1.4-1.4ZM5 11a6 6 0 1 1 12 0 6 6 0 0 1-12 0Z" fill="currentColor"/></svg>
@@ -975,12 +1029,12 @@
           <div class="panel-head">
             <div>
               <h2>Candidate records</h2>
-              <p>Searchable profile data, status, skills, source, and assigned owner.</p>
+              <p>Click any field to edit. Move candidates backward or forward between statuses.</p>
             </div>
           </div>
           <div class="table-wrap">
             <table>
-              <thead><tr><th>Candidate</th><th>Status</th><th>Skills</th><th>Source</th><th>Owner</th><th>Last touch</th></tr></thead>
+              <thead><tr><th>Candidate</th><th>Status</th><th>Skills</th><th>Source</th><th>Owner</th><th>Resume</th><th>Last touch</th><th>Actions</th></tr></thead>
               <tbody id="candidateRows"></tbody>
             </table>
           </div>
@@ -992,7 +1046,7 @@
           <div class="panel-head">
             <div>
               <h2>Client accounts</h2>
-              <p>Hiring contacts, open searches, urgency, and projected fee value.</p>
+              <p>Click account fields to edit company details, urgency, fees, and next steps.</p>
             </div>
             <div class="panel-actions">
               <button class="ghost" id="sortClients">Sort by value</button>
@@ -1000,7 +1054,7 @@
           </div>
           <div class="table-wrap">
             <table>
-              <thead><tr><th>Client</th><th>Contact</th><th>Open roles</th><th>Urgency</th><th>Projected fees</th><th>Next step</th></tr></thead>
+              <thead><tr><th>Client</th><th>Contact</th><th>Open roles</th><th>Urgency</th><th>Projected fees</th><th>Next step</th><th>Actions</th></tr></thead>
               <tbody id="clientRows"></tbody>
             </table>
           </div>
@@ -1081,12 +1135,12 @@
               <div class="field-grid">
                 <label>Full name<input name="name" required placeholder="Jordan Lee"></label>
                 <label>Email<input name="email" type="email" required placeholder="jordan@example.com"></label>
-                <label>Current title<input name="title" required placeholder="Senior Recruiter"></label>
+                <label>Current title<input name="title" required placeholder="Beverage Sales Manager"></label>
                 <label>Location<input name="location" required placeholder="Austin, TX"></label>
                 <label>Source<select name="source"><option>Referral</option><option>LinkedIn</option><option>Job board</option><option>Inbound form</option></select></label>
                 <label>Status<select name="status"><option>Available</option><option>Interviewing</option><option>Placed</option></select></label>
               </div>
-              <label>Skills<textarea name="skills" required placeholder="Sourcing, healthcare staffing, executive search"></textarea></label>
+              <label>Skills<textarea name="skills" required placeholder="Distributor management, chain accounts, beverage sales"></textarea></label>
               <label>Resume upload<input name="resume" type="file" accept=".pdf,.doc,.docx"><span class="file-note">Accepted formats: PDF, DOC, or DOCX. Prototype stores the file name only.</span></label>
               <button class="solid" type="submit">Save candidate</button>
             </form>
@@ -1119,8 +1173,8 @@
             <h2>Team login</h2>
             <p>Prototype authentication flow for recruiters, admins, and client-facing users.</p>
             <form id="loginForm">
-              <label>Email<input name="email" type="email" value="admin@recruitos.local"></label>
-              <label>Password<input name="password" type="password" value="codex-demo"></label>
+              <label>Email<input name="email" type="email" value="admin@prometheusrecruit.local"></label>
+              <label>Password<input name="password" type="password" value="beverage-demo"></label>
               <button class="solid" type="submit">Sign in</button>
             </form>
           </section>
@@ -1146,36 +1200,45 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
+    const storageKey = "prometheus-recruit-beverage-network-state";
+
     const state = {
       candidateFilter: "all",
       clientSortHigh: false,
       candidates: [
-        { name: "Avery Morgan", title: "Revenue Operations Manager", email: "avery@example.com", location: "Denver, CO", status: "Available", skills: "Salesforce, forecasting, SaaS ops", source: "Referral", owner: "Maya", lastTouch: "Today", resume: "avery-morgan-resume.pdf" },
-        { name: "Priya Shah", title: "Senior Product Recruiter", email: "priya@example.com", location: "Seattle, WA", status: "Interviewing", skills: "Technical recruiting, sourcing, AI startups", source: "LinkedIn", owner: "Leo", lastTouch: "Yesterday", resume: "priya-shah-cv.docx" },
-        { name: "Marcus Reed", title: "Client Success Director", email: "marcus@example.com", location: "Chicago, IL", status: "Available", skills: "Enterprise accounts, renewals, team leadership", source: "Inbound form", owner: "Nina", lastTouch: "2 days ago", resume: "marcus-reed-resume.pdf" },
-        { name: "Elena Cruz", title: "VP People", email: "elena@example.com", location: "Miami, FL", status: "Placed", skills: "HR strategy, compensation, scaling teams", source: "Referral", owner: "Maya", lastTouch: "Last week", resume: "elena-cruz-profile.pdf" },
-        { name: "Noah Bennett", title: "Healthcare Staffing Lead", email: "noah@example.com", location: "Phoenix, AZ", status: "Interviewing", skills: "Healthcare staffing, credentialing, branch ops", source: "Job board", owner: "Sam", lastTouch: "Today", resume: "noah-bennett-resume.docx" }
+        { id: "cand-1", name: "Avery Morgan", title: "Regional Beverage Sales Manager", email: "avery@example.com", location: "Denver, CO", status: "Available", skills: "Distributor management, chain accounts, premium spirits", source: "Referral", owner: "Maya", lastTouch: "Today", resume: "avery-morgan-resume.pdf" },
+        { id: "cand-2", name: "Priya Shah", title: "Brand Marketing Director", email: "priya@example.com", location: "Seattle, WA", status: "Interviewing", skills: "RTD launches, shopper marketing, national accounts", source: "LinkedIn", owner: "Leo", lastTouch: "Yesterday", resume: "priya-shah-cv.docx" },
+        { id: "cand-3", name: "Marcus Reed", title: "National Account Director", email: "marcus@example.com", location: "Chicago, IL", status: "Available", skills: "Grocery chains, category reviews, team leadership", source: "Inbound form", owner: "Nina", lastTouch: "2 days ago", resume: "marcus-reed-resume.pdf" },
+        { id: "cand-4", name: "Elena Cruz", title: "VP Beverage Operations", email: "elena@example.com", location: "Miami, FL", status: "Placed", skills: "Production planning, co-packing, supply chain", source: "Referral", owner: "Maya", lastTouch: "Last week", resume: "elena-cruz-profile.pdf" },
+        { id: "cand-5", name: "Noah Bennett", title: "On-Premise Sales Lead", email: "noah@example.com", location: "Phoenix, AZ", status: "Interviewing", skills: "Hospitality groups, route-to-market, activation", source: "Job board", owner: "Sam", lastTouch: "Today", resume: "noah-bennett-resume.docx" }
       ],
       clients: [
-        { company: "Northstar Health", contact: "Dana Kim", roles: 4, urgency: "High", fees: 168000, next: "Submit shortlist" },
-        { company: "Cobalt Systems", contact: "Renee Hart", roles: 2, urgency: "Medium", fees: 92000, next: "Schedule intake" },
-        { company: "Summit Retail Group", contact: "Miles Ortega", roles: 3, urgency: "High", fees: 126000, next: "Client review" },
-        { company: "Harbor Finance", contact: "Olivia Park", roles: 1, urgency: "Low", fees: 52000, next: "Finalize profile" }
+        { id: "client-1", company: "Beverage Network", contact: "Dana Kim", roles: 4, urgency: "High", fees: 168000, next: "Submit shortlist" },
+        { id: "client-2", company: "Cobalt Craft Beverages", contact: "Renee Hart", roles: 2, urgency: "Medium", fees: 92000, next: "Schedule intake" },
+        { id: "client-3", company: "Summit Retail Beverage", contact: "Miles Ortega", roles: 3, urgency: "High", fees: 126000, next: "Client review" },
+        { id: "client-4", company: "Harbor Spirits Group", contact: "Olivia Park", roles: 1, urgency: "Low", fees: 52000, next: "Finalize profile" }
       ],
       pipeline: [
-        { role: "Director of Nursing", client: "Northstar Health", candidate: "Noah Bennett", stage: "Sourced", value: 44000, owner: "Sam" },
-        { role: "Senior Product Recruiter", client: "Cobalt Systems", candidate: "Priya Shah", stage: "Screening", value: 36000, owner: "Leo" },
-        { role: "RevOps Manager", client: "Summit Retail Group", candidate: "Avery Morgan", stage: "Client Review", value: 42000, owner: "Maya" },
-        { role: "VP People", client: "Harbor Finance", candidate: "Elena Cruz", stage: "Offer", value: 52000, owner: "Maya" },
-        { role: "Client Success Director", client: "Summit Retail Group", candidate: "Marcus Reed", stage: "Screening", value: 39000, owner: "Nina" }
+        { id: "pipe-1", role: "Director of Distributor Sales", client: "Beverage Network", candidate: "Noah Bennett", stage: "Sourced", value: 44000, owner: "Sam" },
+        { id: "pipe-2", role: "Brand Marketing Director", client: "Cobalt Craft Beverages", candidate: "Priya Shah", stage: "Screening", value: 36000, owner: "Leo" },
+        { id: "pipe-3", role: "Regional Sales Manager", client: "Summit Retail Beverage", candidate: "Avery Morgan", stage: "Client Review", value: 42000, owner: "Maya" },
+        { id: "pipe-4", role: "VP Beverage Operations", client: "Harbor Spirits Group", candidate: "Elena Cruz", stage: "Offer", value: 52000, owner: "Maya" },
+        { id: "pipe-5", role: "National Account Director", client: "Summit Retail Beverage", candidate: "Marcus Reed", stage: "Screening", value: 39000, owner: "Nina" }
       ],
       activities: [
         ["M", "Maya moved Avery Morgan to client review.", "12 minutes ago"],
         ["L", "Leo added interview notes for Priya Shah.", "45 minutes ago"],
-        ["S", "Sam created Northstar Health shortlist.", "Today"],
-        ["N", "Nina updated Summit Retail Group fee forecast.", "Yesterday"]
+        ["S", "Sam created Beverage Network shortlist.", "Today"],
+        ["N", "Nina updated Summit Retail Beverage fee forecast.", "Yesterday"]
       ]
     };
+
+    try {
+      const savedState = JSON.parse(localStorage.getItem(storageKey) || "null");
+      if (savedState) Object.assign(state, savedState);
+    } catch {
+      localStorage.removeItem(storageKey);
+    }
 
     const schema = {
       candidates: ["id", "full_name", "email", "phone", "location", "current_title", "status", "source", "owner_id", "created_at"],
@@ -1184,11 +1247,11 @@
       pipeline_items: ["id", "candidate_id", "search_id", "stage", "value", "next_step", "updated_at"],
       notes: ["id", "entity_type", "entity_id", "author_id", "body", "created_at"],
       reports: ["id", "report_type", "filters", "created_by", "created_at", "export_url"],
-      users: ["id", "name", "email", "role", "last_login", "status"]
+      app_users: ["id", "name", "email", "role", "last_login", "status"]
     };
 
     const headings = {
-      dashboard: ["Recruiting command center", "Manage candidates, clients, pipeline movement, and operating metrics from one workspace."],
+      dashboard: ["Beverage Network command center", "Manage beverage candidates, clients, pipeline movement, and operating metrics from one workspace."],
       candidates: ["Candidate CRM", "Search candidate profiles, filter by status, and track ownership."],
       clients: ["Client CRM", "See hiring accounts, active searches, urgency, fees, and next steps."],
       pipeline: ["Pipeline board", "Move roles and candidates through sourced, screening, client review, and offer stages."],
@@ -1199,8 +1262,20 @@
     };
 
     const stageOrder = ["Sourced", "Screening", "Client Review", "Offer"];
+    const candidateStatuses = ["Available", "Interviewing", "Placed", "Archived"];
     const $ = (selector) => document.querySelector(selector);
     const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+
+    function saveState() {
+      localStorage.setItem(storageKey, JSON.stringify({
+        candidateFilter: state.candidateFilter,
+        clientSortHigh: state.clientSortHigh,
+        candidates: state.candidates,
+        clients: state.clients,
+        pipeline: state.pipeline,
+        activities: state.activities.slice(0, 25)
+      }));
+    }
 
     function initials(name) {
       return name.split(" ").map((part) => part[0]).join("").slice(0, 2).toUpperCase();
@@ -1237,6 +1312,14 @@
       return Object.values(record).join(" ").toLowerCase().includes(query.toLowerCase());
     }
 
+    function options(values, selected) {
+      return values.map((value) => `<option value="${value}" ${value === selected ? "selected" : ""}>${value}</option>`).join("");
+    }
+
+    function findById(collection, id) {
+      return collection.find((item) => item.id === id);
+    }
+
     function renderCandidates() {
       const query = $("#globalSearch").value.trim();
       const candidates = state.candidates.filter((candidate) => {
@@ -1244,15 +1327,36 @@
         return statusMatch && rowMatchesSearch(candidate, query);
       });
       $("#candidateRows").innerHTML = candidates.map((candidate) => `
-        <tr>
-          <td><div class="person"><div class="avatar">${initials(candidate.name)}</div><div><strong>${candidate.name}</strong><span>${candidate.title} · ${candidate.location}</span></div></div></td>
-          <td><span class="pill ${pillClass(candidate.status)}">${candidate.status}</span></td>
-          <td>${candidate.skills}</td>
-          <td>${candidate.source}</td>
-          <td>${candidate.owner}</td>
+        <tr data-candidate-id="${candidate.id}">
+          <td>
+            <div class="person">
+              <div class="avatar">${initials(candidate.name)}</div>
+              <div>
+                <input class="inline-edit" data-edit="candidate" data-field="name" value="${candidate.name}" aria-label="Candidate name">
+                <input class="inline-edit" data-edit="candidate" data-field="title" value="${candidate.title}" aria-label="Candidate title">
+                <input class="inline-edit" data-edit="candidate" data-field="location" value="${candidate.location}" aria-label="Candidate location">
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="status-control">
+              <button class="mini-btn" data-status-step="candidate" data-direction="-1" ${candidateStatuses.indexOf(candidate.status) === 0 ? "disabled" : ""} aria-label="Move candidate status back">‹</button>
+              <select class="inline-select" data-edit="candidate" data-field="status" aria-label="Candidate status">${options(candidateStatuses, candidate.status)}</select>
+              <button class="mini-btn" data-status-step="candidate" data-direction="1" ${candidateStatuses.indexOf(candidate.status) === candidateStatuses.length - 1 ? "disabled" : ""} aria-label="Move candidate status forward">›</button>
+            </div>
+          </td>
+          <td><textarea class="inline-edit" data-edit="candidate" data-field="skills" aria-label="Candidate skills">${candidate.skills}</textarea></td>
+          <td><select class="inline-select" data-edit="candidate" data-field="source" aria-label="Candidate source">${options(["Referral", "LinkedIn", "Job board", "Inbound form", "Trade show", "Distributor network"], candidate.source)}</select></td>
+          <td><input class="inline-edit" data-edit="candidate" data-field="owner" value="${candidate.owner}" aria-label="Candidate owner"></td>
+          <td>${candidate.resume ? `<span class="pill blue">${candidate.resume}</span>` : `<span class="pill amber">Needed</span>`}</td>
           <td>${candidate.lastTouch}</td>
+          <td>
+            <div class="row-actions">
+              <button class="ghost" data-add-pipeline="${candidate.id}">Add to pipeline</button>
+            </div>
+          </td>
         </tr>
-      `).join("") || `<tr><td colspan="6">No candidates match the current search.</td></tr>`;
+      `).join("") || `<tr><td colspan="8">No candidates match the current search.</td></tr>`;
 
       $("#intakeRows").innerHTML = state.candidates.slice(-4).reverse().map((candidate) => `
         <tr>
@@ -1272,15 +1376,16 @@
         .sort((a, b) => state.clientSortHigh ? b.fees - a.fees : a.company.localeCompare(b.company));
 
       $("#clientRows").innerHTML = clients.map((client) => `
-        <tr>
-          <td><div class="person"><div class="avatar">${initials(client.company)}</div><div><strong>${client.company}</strong><span>${client.roles} active searches</span></div></div></td>
-          <td>${client.contact}</td>
-          <td>${client.roles}</td>
-          <td><span class="pill ${pillClass(client.urgency)}">${client.urgency}</span></td>
-          <td>${money(client.fees)}</td>
-          <td>${client.next}</td>
+        <tr data-client-id="${client.id}">
+          <td><div class="person"><div class="avatar">${initials(client.company)}</div><div><input class="inline-edit" data-edit="client" data-field="company" value="${client.company}" aria-label="Client company"><span>${client.roles} active searches</span></div></div></td>
+          <td><input class="inline-edit" data-edit="client" data-field="contact" value="${client.contact}" aria-label="Client contact"></td>
+          <td><input class="inline-edit" data-edit="client" data-field="roles" type="number" min="0" value="${client.roles}" aria-label="Open roles"></td>
+          <td><select class="inline-select" data-edit="client" data-field="urgency" aria-label="Client urgency">${options(["Low", "Medium", "High"], client.urgency)}</select></td>
+          <td><input class="inline-edit" data-edit="client" data-field="fees" type="number" min="0" step="1000" value="${client.fees}" aria-label="Projected fees"></td>
+          <td><input class="inline-edit" data-edit="client" data-field="next" value="${client.next}" aria-label="Next step"></td>
+          <td><button class="ghost" data-client-priority="${client.id}">Mark priority</button></td>
         </tr>
-      `).join("") || `<tr><td colspan="6">No clients match the current search.</td></tr>`;
+      `).join("") || `<tr><td colspan="7">No clients match the current search.</td></tr>`;
     }
 
     function renderPipeline() {
@@ -1291,10 +1396,15 @@
           <section class="column" aria-label="${stage}">
             <h3>${stage}<span class="pill blue">${items.length}</span></h3>
             ${items.map((item) => `
-              <article class="deal">
+              <article class="deal" data-pipeline-id="${item.id}">
                 <strong>${item.role}</strong>
                 <p>${item.client} · ${item.candidate}</p>
                 <div class="deal-meta"><span>${money(item.value)}</span><span>${item.owner}</span></div>
+                <div class="status-control" style="margin-top: 12px; min-width: 0;">
+                  <button class="mini-btn" data-stage-step="${item.id}" data-direction="-1" ${stageOrder.indexOf(item.stage) === 0 ? "disabled" : ""} aria-label="Move pipeline stage back">‹</button>
+                  <select class="inline-select" data-pipeline-stage="${item.id}" aria-label="Pipeline stage">${options(stageOrder, item.stage)}</select>
+                  <button class="mini-btn" data-stage-step="${item.id}" data-direction="1" ${stageOrder.indexOf(item.stage) === stageOrder.length - 1 ? "disabled" : ""} aria-label="Move pipeline stage forward">›</button>
+                </div>
               </article>
             `).join("") || `<article class="deal"><p>No matching cards.</p></article>`}
           </section>
@@ -1418,10 +1528,124 @@
 
     $("#globalSearch").addEventListener("input", renderAll);
 
+    document.addEventListener("change", (event) => {
+      const target = event.target;
+      const editType = target.dataset.edit;
+      if (editType === "candidate") {
+        const row = target.closest("[data-candidate-id]");
+        const candidate = findById(state.candidates, row.dataset.candidateId);
+        if (!candidate) return;
+        const oldName = candidate.name;
+        candidate[target.dataset.field] = target.value;
+        candidate.lastTouch = "Just now";
+        if (target.dataset.field === "name") {
+          state.pipeline.forEach((item) => {
+            if (item.candidate === oldName) item.candidate = target.value;
+          });
+        }
+        state.activities.unshift([candidate.owner[0] || "P", `${candidate.name} was updated in Prometheus Recruit.`, "Just now"]);
+        saveState();
+        renderAll();
+        showToast(`${candidate.name} updated.`);
+      }
+
+      if (editType === "client") {
+        const row = target.closest("[data-client-id]");
+        const client = findById(state.clients, row.dataset.clientId);
+        if (!client) return;
+        const oldCompany = client.company;
+        const field = target.dataset.field;
+        client[field] = field === "roles" || field === "fees" ? Number(target.value) : target.value;
+        if (field === "company") {
+          state.pipeline.forEach((item) => {
+            if (item.client === oldCompany) item.client = target.value;
+          });
+        }
+        state.activities.unshift(["P", `${client.company} account was updated.`, "Just now"]);
+        saveState();
+        renderAll();
+        showToast(`${client.company} updated.`);
+      }
+
+      if (target.dataset.pipelineStage) {
+        const item = findById(state.pipeline, target.dataset.pipelineStage);
+        if (!item) return;
+        item.stage = target.value;
+        state.activities.unshift([item.owner[0] || "P", `${item.candidate} moved to ${item.stage}.`, "Just now"]);
+        saveState();
+        renderAll();
+        showToast(`${item.candidate} moved to ${item.stage}.`);
+      }
+    });
+
+    document.addEventListener("click", (event) => {
+      const statusButton = event.target.closest("[data-status-step='candidate']");
+      if (statusButton) {
+        const row = statusButton.closest("[data-candidate-id]");
+        const candidate = findById(state.candidates, row.dataset.candidateId);
+        if (!candidate) return;
+        const nextIndex = Math.max(0, Math.min(candidateStatuses.length - 1, candidateStatuses.indexOf(candidate.status) + Number(statusButton.dataset.direction)));
+        candidate.status = candidateStatuses[nextIndex];
+        candidate.lastTouch = "Just now";
+        state.activities.unshift([candidate.owner[0] || "P", `${candidate.name} moved to ${candidate.status}.`, "Just now"]);
+        saveState();
+        renderAll();
+        showToast(`${candidate.name} moved to ${candidate.status}.`);
+        return;
+      }
+
+      const stageButton = event.target.closest("[data-stage-step]");
+      if (stageButton) {
+        const item = findById(state.pipeline, stageButton.dataset.stageStep);
+        if (!item) return;
+        const nextIndex = Math.max(0, Math.min(stageOrder.length - 1, stageOrder.indexOf(item.stage) + Number(stageButton.dataset.direction)));
+        item.stage = stageOrder[nextIndex];
+        state.activities.unshift([item.owner[0] || "P", `${item.candidate} moved to ${item.stage}.`, "Just now"]);
+        saveState();
+        renderAll();
+        showToast(`${item.candidate} moved to ${item.stage}.`);
+        return;
+      }
+
+      const addPipeline = event.target.closest("[data-add-pipeline]");
+      if (addPipeline) {
+        const candidate = findById(state.candidates, addPipeline.dataset.addPipeline);
+        const client = state.clients[0];
+        if (!candidate || !client) return;
+        state.pipeline.push({
+          id: `pipe-${Date.now()}`,
+          role: candidate.title,
+          client: client.company,
+          candidate: candidate.name,
+          stage: "Sourced",
+          value: 35000,
+          owner: candidate.owner
+        });
+        state.activities.unshift([candidate.owner[0] || "P", `${candidate.name} was added to the Beverage Network pipeline.`, "Just now"]);
+        saveState();
+        renderAll();
+        showToast(`${candidate.name} added to pipeline.`);
+        return;
+      }
+
+      const priorityButton = event.target.closest("[data-client-priority]");
+      if (priorityButton) {
+        const client = findById(state.clients, priorityButton.dataset.clientPriority);
+        if (!client) return;
+        client.urgency = "High";
+        client.next = "Priority follow-up";
+        state.activities.unshift(["P", `${client.company} marked high priority.`, "Just now"]);
+        saveState();
+        renderAll();
+        showToast(`${client.company} marked high priority.`);
+      }
+    });
+
     $$("[data-candidate-filter]").forEach((button) => {
       button.addEventListener("click", () => {
         state.candidateFilter = button.dataset.candidateFilter;
         $$("[data-candidate-filter]").forEach((tab) => tab.classList.toggle("active", tab === button));
+        saveState();
         renderCandidates();
       });
     });
@@ -1429,6 +1653,7 @@
     $("#sortClients").addEventListener("click", () => {
       state.clientSortHigh = !state.clientSortHigh;
       $("#sortClients").textContent = state.clientSortHigh ? "Sort by name" : "Sort by value";
+      saveState();
       renderClients();
     });
 
@@ -1440,13 +1665,14 @@
       }
       movable.stage = stageOrder[stageOrder.indexOf(movable.stage) + 1];
       state.activities.unshift([movable.owner[0], `${movable.owner} advanced ${movable.candidate} to ${movable.stage}.`, "Just now"]);
+      saveState();
       renderAll();
       showToast(`${movable.candidate} moved to ${movable.stage}.`);
     });
 
     $("#copyReport").addEventListener("click", async () => {
       const totalFees = state.clients.reduce((sum, client) => sum + client.fees, 0);
-      const summary = `RecruitOS report: ${state.candidates.length} candidates, ${state.pipeline.length} pipeline items, ${money(totalFees)} projected client fees.`;
+      const summary = `Prometheus Recruit report for Beverage Network: ${state.candidates.length} candidates, ${state.pipeline.length} pipeline items, ${money(totalFees)} projected client fees.`;
       try {
         await navigator.clipboard.writeText(summary);
         showToast("Report summary copied.");
@@ -1463,7 +1689,7 @@
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = "recruitos-client-report.csv";
+      link.download = "prometheus-recruit-beverage-network-report.csv";
       link.click();
       URL.revokeObjectURL(url);
       showToast("Client report downloaded.");
@@ -1474,6 +1700,7 @@
       const resumeFile = event.currentTarget.elements.resume.files[0];
       const data = Object.fromEntries(new FormData(event.currentTarget));
       state.candidates.push({
+        id: `cand-${Date.now()}`,
         name: data.name,
         title: data.title,
         email: data.email,
@@ -1487,6 +1714,7 @@
       });
       state.activities.unshift(["M", `Maya added ${data.name} to the candidate CRM.`, "Just now"]);
       event.currentTarget.reset();
+      saveState();
       renderAll();
       showToast(`${data.name} was added to the CRM.`);
     });
