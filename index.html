@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Prometheus RECRUIT</title>
+  <title>RecruitOS Prototype</title>
   <style>
     :root {
       color-scheme: light;
@@ -580,6 +580,19 @@
       resize: vertical;
     }
 
+    input[type="file"] {
+      padding: 9px 10px;
+      background: #f7fafb;
+    }
+
+    .file-note {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 650;
+      line-height: 1.35;
+    }
+
     input:focus,
     select:focus,
     textarea:focus {
@@ -940,6 +953,7 @@
                 <label>Status<select name="status"><option>Available</option><option>Interviewing</option><option>Placed</option></select></label>
               </div>
               <label>Skills<textarea name="skills" required placeholder="Sourcing, healthcare staffing, executive search"></textarea></label>
+              <label>Resume upload<input name="resume" type="file" accept=".pdf,.doc,.docx"><span class="file-note">Accepted formats: PDF, DOC, or DOCX. Prototype stores the file name only.</span></label>
               <button class="solid" type="submit">Save candidate</button>
             </form>
           </section>
@@ -948,12 +962,12 @@
             <div class="panel-head">
               <div>
                 <h2>Intake preview</h2>
-                <p>New records are immediately available across search and candidate CRM.</p>
+              <p>New records are immediately available across search and candidate CRM.</p>
               </div>
             </div>
             <div class="table-wrap">
               <table>
-                <thead><tr><th>Recent candidate</th><th>Status</th><th>Source</th><th>Skills</th></tr></thead>
+                <thead><tr><th>Recent candidate</th><th>Status</th><th>Source</th><th>Resume</th><th>Skills</th></tr></thead>
                 <tbody id="intakeRows"></tbody>
               </table>
             </div>
@@ -1002,11 +1016,11 @@
       candidateFilter: "all",
       clientSortHigh: false,
       candidates: [
-        { name: "Avery Morgan", title: "Revenue Operations Manager", email: "avery@example.com", location: "Denver, CO", status: "Available", skills: "Salesforce, forecasting, SaaS ops", source: "Referral", owner: "Maya", lastTouch: "Today" },
-        { name: "Priya Shah", title: "Senior Product Recruiter", email: "priya@example.com", location: "Seattle, WA", status: "Interviewing", skills: "Technical recruiting, sourcing, AI startups", source: "LinkedIn", owner: "Leo", lastTouch: "Yesterday" },
-        { name: "Marcus Reed", title: "Client Success Director", email: "marcus@example.com", location: "Chicago, IL", status: "Available", skills: "Enterprise accounts, renewals, team leadership", source: "Inbound form", owner: "Nina", lastTouch: "2 days ago" },
-        { name: "Elena Cruz", title: "VP People", email: "elena@example.com", location: "Miami, FL", status: "Placed", skills: "HR strategy, compensation, scaling teams", source: "Referral", owner: "Maya", lastTouch: "Last week" },
-        { name: "Noah Bennett", title: "Healthcare Staffing Lead", email: "noah@example.com", location: "Phoenix, AZ", status: "Interviewing", skills: "Healthcare staffing, credentialing, branch ops", source: "Job board", owner: "Sam", lastTouch: "Today" }
+        { name: "Avery Morgan", title: "Revenue Operations Manager", email: "avery@example.com", location: "Denver, CO", status: "Available", skills: "Salesforce, forecasting, SaaS ops", source: "Referral", owner: "Maya", lastTouch: "Today", resume: "avery-morgan-resume.pdf" },
+        { name: "Priya Shah", title: "Senior Product Recruiter", email: "priya@example.com", location: "Seattle, WA", status: "Interviewing", skills: "Technical recruiting, sourcing, AI startups", source: "LinkedIn", owner: "Leo", lastTouch: "Yesterday", resume: "priya-shah-cv.docx" },
+        { name: "Marcus Reed", title: "Client Success Director", email: "marcus@example.com", location: "Chicago, IL", status: "Available", skills: "Enterprise accounts, renewals, team leadership", source: "Inbound form", owner: "Nina", lastTouch: "2 days ago", resume: "marcus-reed-resume.pdf" },
+        { name: "Elena Cruz", title: "VP People", email: "elena@example.com", location: "Miami, FL", status: "Placed", skills: "HR strategy, compensation, scaling teams", source: "Referral", owner: "Maya", lastTouch: "Last week", resume: "elena-cruz-profile.pdf" },
+        { name: "Noah Bennett", title: "Healthcare Staffing Lead", email: "noah@example.com", location: "Phoenix, AZ", status: "Interviewing", skills: "Healthcare staffing, credentialing, branch ops", source: "Job board", owner: "Sam", lastTouch: "Today", resume: "noah-bennett-resume.docx" }
       ],
       clients: [
         { company: "Northstar Health", contact: "Dana Kim", roles: 4, urgency: "High", fees: 168000, next: "Submit shortlist" },
@@ -1109,6 +1123,7 @@
           <td><div class="person"><div class="avatar">${initials(candidate.name)}</div><div><strong>${candidate.name}</strong><span>${candidate.email}</span></div></div></td>
           <td><span class="pill ${pillClass(candidate.status)}">${candidate.status}</span></td>
           <td>${candidate.source}</td>
+          <td>${candidate.resume ? `<span class="pill blue">${candidate.resume}</span>` : `<span class="pill amber">Needed</span>`}</td>
           <td>${candidate.skills}</td>
         </tr>
       `).join("");
@@ -1235,6 +1250,7 @@
 
     $("#candidateForm").addEventListener("submit", (event) => {
       event.preventDefault();
+      const resumeFile = event.currentTarget.elements.resume.files[0];
       const data = Object.fromEntries(new FormData(event.currentTarget));
       state.candidates.push({
         name: data.name,
@@ -1244,6 +1260,7 @@
         status: data.status,
         skills: data.skills,
         source: data.source,
+        resume: resumeFile ? resumeFile.name : "",
         owner: "Maya",
         lastTouch: "Just now"
       });
