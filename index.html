@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Prometheus RECRUIT</title>
+  <title>RecruitOS Prototype</title>
   <style>
     :root {
       color-scheme: light;
@@ -606,6 +606,85 @@
       gap: 14px;
     }
 
+    .report-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .report-card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: 0 10px 28px rgba(23, 33, 47, 0.04);
+    }
+
+    .report-card h3 {
+      margin: 0 0 12px;
+      font-size: 0.98rem;
+      letter-spacing: 0;
+    }
+
+    .report-stat {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .report-stat strong {
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .report-stat span {
+      color: var(--muted);
+      font-size: 0.84rem;
+      font-weight: 740;
+    }
+
+    .bar-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .bar-row {
+      display: grid;
+      gap: 6px;
+    }
+
+    .bar-label {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.84rem;
+      font-weight: 760;
+    }
+
+    .bar-track {
+      height: 10px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #e8eef1;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: var(--brand);
+    }
+
+    .report-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
     .schema-card {
       padding: 16px;
       border: 1px solid var(--line);
@@ -714,6 +793,7 @@
 
     @media (max-width: 1080px) {
       .metrics,
+      .report-grid,
       .schema {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -762,6 +842,7 @@
       }
 
       .metrics,
+      .report-grid,
       .schema,
       .field-grid {
         grid-template-columns: 1fr;
@@ -801,6 +882,10 @@
         <button data-view="pipeline" aria-label="Pipeline">
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16v4H4V5Zm0 6h10v4H4v-4Zm0 6h16v4H4v-4Z" fill="currentColor"/></svg>
           Pipeline
+        </button>
+        <button data-view="reports" aria-label="Reports">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19h14v2H5v-2Zm1-2h3V9H6v8Zm5 0h3V3h-3v14Zm5 0h3v-7h-3v7Z" fill="currentColor"/></svg>
+          Reports
         </button>
         <button data-view="intake" aria-label="Intake forms">
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 2h9l5 5v15H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm8 1.5V8h4.5L14 3.5ZM8 12h8v2H8v-2Zm0 4h8v2H8v-2Z" fill="currentColor"/></svg>
@@ -934,6 +1019,55 @@
         <div class="board" id="pipelineBoard"></div>
       </section>
 
+      <section class="view" id="reports" aria-label="CRM reports">
+        <div class="toolbar">
+          <div class="tabs" aria-label="Report range">
+            <button class="active" data-report-range="30">30 days</button>
+            <button data-report-range="90">90 days</button>
+            <button data-report-range="365">Year</button>
+          </div>
+          <div class="report-actions">
+            <button class="ghost" id="copyReport">Copy summary</button>
+            <button class="solid" id="downloadReport">Download CSV</button>
+          </div>
+        </div>
+
+        <div class="report-grid">
+          <article class="report-card">
+            <h3>Source performance</h3>
+            <div class="report-stat"><strong id="reportTopSource">-</strong><span>top source</span></div>
+            <div class="bar-list" id="sourceReport"></div>
+          </article>
+
+          <article class="report-card">
+            <h3>Pipeline stage mix</h3>
+            <div class="report-stat"><strong id="reportTopStage">-</strong><span>largest stage</span></div>
+            <div class="bar-list" id="stageReport"></div>
+          </article>
+
+          <article class="report-card">
+            <h3>Recruiter workload</h3>
+            <div class="report-stat"><strong id="reportTopOwner">-</strong><span>most records</span></div>
+            <div class="bar-list" id="ownerReport"></div>
+          </article>
+        </div>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Client search report</h2>
+              <p>Open roles, urgency, projected fees, pipeline candidates, and next actions.</p>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Client</th><th>Open roles</th><th>Urgency</th><th>Pipeline candidates</th><th>Projected fees</th><th>Next step</th></tr></thead>
+              <tbody id="reportRows"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
       <section class="view" id="intake" aria-label="Candidate intake">
         <div class="forms">
           <section class="panel">
@@ -1049,6 +1183,7 @@
       searches: ["id", "client_id", "role_title", "priority", "salary_range", "status", "owner_id", "opened_at"],
       pipeline_items: ["id", "candidate_id", "search_id", "stage", "value", "next_step", "updated_at"],
       notes: ["id", "entity_type", "entity_id", "author_id", "body", "created_at"],
+      reports: ["id", "report_type", "filters", "created_by", "created_at", "export_url"],
       users: ["id", "name", "email", "role", "last_login", "status"]
     };
 
@@ -1057,6 +1192,7 @@
       candidates: ["Candidate CRM", "Search candidate profiles, filter by status, and track ownership."],
       clients: ["Client CRM", "See hiring accounts, active searches, urgency, fees, and next steps."],
       pipeline: ["Pipeline board", "Move roles and candidates through sourced, screening, client review, and offer stages."],
+      reports: ["CRM reports", "Build source, pipeline, client, recruiter, and fee reports from CRM data."],
       intake: ["Candidate intake forms", "Capture candidate details and add new records into the CRM instantly."],
       schema: ["Complete database schema", "A practical foundation for the platform data model."],
       auth: ["Login and authentication", "A role-aware access model for the future production app."]
@@ -1186,6 +1322,65 @@
       `).join("");
     }
 
+    function countBy(items, key) {
+      return items.reduce((counts, item) => {
+        const value = item[key] || "Unassigned";
+        counts[value] = (counts[value] || 0) + 1;
+        return counts;
+      }, {});
+    }
+
+    function topEntry(entries) {
+      return entries.sort((a, b) => b[1] - a[1])[0] || ["-", 0];
+    }
+
+    function renderBars(container, entries) {
+      const max = Math.max(...entries.map((entry) => entry[1]), 1);
+      container.innerHTML = entries.map(([label, value]) => `
+        <div class="bar-row">
+          <div class="bar-label"><span>${label}</span><span>${value}</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width: ${(value / max) * 100}%"></div></div>
+        </div>
+      `).join("");
+    }
+
+    function reportRows() {
+      return state.clients.map((client) => {
+        const candidates = state.pipeline.filter((item) => item.client === client.company);
+        return {
+          client: client.company,
+          roles: client.roles,
+          urgency: client.urgency,
+          pipelineCandidates: candidates.length,
+          fees: client.fees,
+          next: client.next
+        };
+      });
+    }
+
+    function renderReports() {
+      const sourceEntries = Object.entries(countBy(state.candidates, "source")).sort((a, b) => b[1] - a[1]);
+      const stageEntries = Object.entries(countBy(state.pipeline, "stage")).sort((a, b) => b[1] - a[1]);
+      const ownerEntries = Object.entries(countBy(state.candidates, "owner")).sort((a, b) => b[1] - a[1]);
+      $("#reportTopSource").textContent = topEntry([...sourceEntries])[0];
+      $("#reportTopStage").textContent = topEntry([...stageEntries])[0];
+      $("#reportTopOwner").textContent = topEntry([...ownerEntries])[0];
+      renderBars($("#sourceReport"), sourceEntries);
+      renderBars($("#stageReport"), stageEntries);
+      renderBars($("#ownerReport"), ownerEntries);
+
+      $("#reportRows").innerHTML = reportRows().map((row) => `
+        <tr>
+          <td><strong>${row.client}</strong></td>
+          <td>${row.roles}</td>
+          <td><span class="pill ${pillClass(row.urgency)}">${row.urgency}</span></td>
+          <td>${row.pipelineCandidates}</td>
+          <td>${money(row.fees)}</td>
+          <td>${row.next}</td>
+        </tr>
+      `).join("");
+    }
+
     function renderSchema() {
       $("#schemaGrid").innerHTML = Object.entries(schema).map(([table, fields]) => `
         <article class="schema-card">
@@ -1201,6 +1396,7 @@
       renderClients();
       renderPipeline();
       renderActivity();
+      renderReports();
       renderSchema();
     }
 
@@ -1246,6 +1442,31 @@
       state.activities.unshift([movable.owner[0], `${movable.owner} advanced ${movable.candidate} to ${movable.stage}.`, "Just now"]);
       renderAll();
       showToast(`${movable.candidate} moved to ${movable.stage}.`);
+    });
+
+    $("#copyReport").addEventListener("click", async () => {
+      const totalFees = state.clients.reduce((sum, client) => sum + client.fees, 0);
+      const summary = `RecruitOS report: ${state.candidates.length} candidates, ${state.pipeline.length} pipeline items, ${money(totalFees)} projected client fees.`;
+      try {
+        await navigator.clipboard.writeText(summary);
+        showToast("Report summary copied.");
+      } catch {
+        showToast(summary);
+      }
+    });
+
+    $("#downloadReport").addEventListener("click", () => {
+      const header = ["Client", "Open Roles", "Urgency", "Pipeline Candidates", "Projected Fees", "Next Step"];
+      const rows = reportRows().map((row) => [row.client, row.roles, row.urgency, row.pipelineCandidates, row.fees, row.next]);
+      const csv = [header, ...rows].map((row) => row.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(",")).join("\n");
+      const blob = new Blob([csv], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "recruitos-client-report.csv";
+      link.click();
+      URL.revokeObjectURL(url);
+      showToast("Client report downloaded.");
     });
 
     $("#candidateForm").addEventListener("submit", (event) => {
