@@ -1207,6 +1207,22 @@
       clientSortHigh: false,
       candidates: [
 
+      clients: [
+        { id: "client-1", company: "Beverage Network", contact: "Dana Kim", roles: 4, urgency: "High", fees: 168000, next: "Submit shortlist" },
+        { id: "client-2", company: "Cobalt Craft Beverages", contact: "Renee Hart", roles: 2, urgency: "Medium", fees: 92000, next: "Schedule intake" },
+        { id: "client-3", company: "Summit Retail Beverage", contact: "Miles Ortega", roles: 3, urgency: "High", fees: 126000, next: "Client review" },
+        { id: "client-4", company: "Harbor Spirits Group", contact: "Olivia Park", roles: 1, urgency: "Low", fees: 52000, next: "Finalize profile" }
+      ],
+      pipeline: [
+        { id: "pipe-1", role: "Director of Distributor Sales", client: "Beverage Network", candidate: "Noah Bennett", stage: "Sourced", value: 44000, owner: "Sam" },
+        { id: "pipe-2", role: "Brand Marketing Director", client: "Cobalt Craft Beverages", candidate: "Priya Shah", stage: "Screening", value: 36000, owner: "Leo" },
+        { id: "pipe-3", role: "Regional Sales Manager", client: "Summit Retail Beverage", candidate: "Avery Morgan", stage: "Client Review", value: 42000, owner: "Maya" },
+        { id: "pipe-4", role: "VP Beverage Operations", client: "Harbor Spirits Group", candidate: "Elena Cruz", stage: "Offer", value: 52000, owner: "Maya" },
+        { id: "pipe-5", role: "National Account Director", client: "Summit Retail Beverage", candidate: "Marcus Reed", stage: "Screening", value: 39000, owner: "Nina" }
+      ],
+      activities: [
+      ]
+    };
 
     try {
       const savedState = JSON.parse(localStorage.getItem(storageKey) || "null");
@@ -1683,8 +1699,10 @@
         status: data.status,
         skills: data.skills,
         source: data.source,
-        resume: resumeurl = resumeFile ? resumeFile.name : null,
-        owner: data.owner || "Kevin Bockstahler","Bobby Barton","Cyndi Burris"   
+          candidate.resume
+      ? `<a href="${candidate.resume}" target="_blank">📄 View Resume</a>`
+      : "No Resume",
+        owner: data.owner || "Kevin","Bobby","Cyndi"
         lastTouch: "Just now"
       });
       state.activities.unshift(["M", `Maya added ${data.name} to the candidate CRM.`, "Just now"]);
