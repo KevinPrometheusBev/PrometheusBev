@@ -1,4 +1,4 @@
-# RecruitOS Prototype
+# Prometheus RECRUIT
 
 A lightweight recruiting CRM prototype built as a single-page browser app.
 
