@@ -1206,11 +1206,7 @@
       candidateFilter: "all",
       clientSortHigh: false,
       candidates: [
-        { id: "cand-1", name: "Avery Morgan", title: "Regional Beverage Sales Manager", email: "avery@example.com", location: "Denver, CO", status: "Available", skills: "Distributor management, chain accounts, premium spirits", source: "Referral", owner: "Maya", lastTouch: "Today", resume: "avery-morgan-resume.pdf" },
-        { id: "cand-2", name: "Priya Shah", title: "Brand Marketing Director", email: "priya@example.com", location: "Seattle, WA", status: "Interviewing", skills: "RTD launches, shopper marketing, national accounts", source: "LinkedIn", owner: "Leo", lastTouch: "Yesterday", resume: "priya-shah-cv.docx" },
-        { id: "cand-3", name: "Marcus Reed", title: "National Account Director", email: "marcus@example.com", location: "Chicago, IL", status: "Available", skills: "Grocery chains, category reviews, team leadership", source: "Inbound form", owner: "Nina", lastTouch: "2 days ago", resume: "marcus-reed-resume.pdf" },
-        { id: "cand-4", name: "Elena Cruz", title: "VP Beverage Operations", email: "elena@example.com", location: "Miami, FL", status: "Placed", skills: "Production planning, co-packing, supply chain", source: "Referral", owner: "Maya", lastTouch: "Last week", resume: "elena-cruz-profile.pdf" },
-        { id: "cand-5", name: "Noah Bennett", title: "On-Premise Sales Lead", email: "noah@example.com", location: "Phoenix, AZ", status: "Interviewing", skills: "Hospitality groups, route-to-market, activation", source: "Job board", owner: "Sam", lastTouch: "Today", resume: "noah-bennett-resume.docx" }
+       
       ],
       clients: [
         { id: "client-1", company: "Beverage Network", contact: "Dana Kim", roles: 4, urgency: "High", fees: 168000, next: "Submit shortlist" },
@@ -1708,8 +1704,8 @@
         status: data.status,
         skills: data.skills,
         source: data.source,
-        resume: resumeFile ? resumeFile.name : "",
-        owner: "Maya",
+        resume: resumeurl,
+        owner: data.owner || "Kevin","Bobby","Cyndi",
         lastTouch: "Just now"
       });
       state.activities.unshift(["M", `Maya added ${data.name} to the candidate CRM.`, "Just now"]);
