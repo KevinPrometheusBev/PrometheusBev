@@ -1206,18 +1206,7 @@
       candidateFilter: "all",
       clientSortHigh: false,
       candidates: [
-        
-      ],
-      clients: [
-        
-      ],
-      pipeline: [
-        
-      ],
-      activities: [
 
-      ]
-    };
 
     try {
       const savedState = JSON.parse(localStorage.getItem(storageKey) || "null");
@@ -1694,8 +1683,8 @@
         status: data.status,
         skills: data.skills,
         source: data.source,
-        resume: resumeFile ? resumeFile.name : "",
-        owner: "Maya",
+        resume: resumeurl = resumeFile ? resumeFile.name : null,
+        owner: data.owner || "Kevin Bockstahler","Bobby Barton","Cyndi Burris"   
         lastTouch: "Just now"
       });
       state.activities.unshift(["M", `Maya added ${data.name} to the candidate CRM.`, "Just now"]);
