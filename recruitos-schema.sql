@@ -1,4 +1,4 @@
--- RecruitOS starter schema
+-- Prometheus RECRUIT
 -- Designed for PostgreSQL / Supabase-style apps.
 
 create table users (
