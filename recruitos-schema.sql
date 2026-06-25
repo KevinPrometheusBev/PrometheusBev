@@ -1,5 +1,4 @@
 -- Prometheus RECRUIT
--- Designed for PostgreSQL / Supabase-style apps.
 
 create table users (
   id uuid primary key default gen_random_uuid(),
