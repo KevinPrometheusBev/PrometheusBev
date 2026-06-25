@@ -1206,7 +1206,12 @@
       candidateFilter: "all",
       clientSortHigh: false,
       candidates: [
-
+        { id: "cand-1", name: "Avery Morgan", title: "Regional Beverage Sales Manager", email: "avery@example.com", location: "Denver, CO", status: "Available", skills: "Distributor management, chain accounts, premium spirits", source: "Referral", owner: "Maya", lastTouch: "Today", resume: "avery-morgan-resume.pdf" },
+        { id: "cand-2", name: "Priya Shah", title: "Brand Marketing Director", email: "priya@example.com", location: "Seattle, WA", status: "Interviewing", skills: "RTD launches, shopper marketing, national accounts", source: "LinkedIn", owner: "Leo", lastTouch: "Yesterday", resume: "priya-shah-cv.docx" },
+        { id: "cand-3", name: "Marcus Reed", title: "National Account Director", email: "marcus@example.com", location: "Chicago, IL", status: "Available", skills: "Grocery chains, category reviews, team leadership", source: "Inbound form", owner: "Nina", lastTouch: "2 days ago", resume: "marcus-reed-resume.pdf" },
+        { id: "cand-4", name: "Elena Cruz", title: "VP Beverage Operations", email: "elena@example.com", location: "Miami, FL", status: "Placed", skills: "Production planning, co-packing, supply chain", source: "Referral", owner: "Maya", lastTouch: "Last week", resume: "elena-cruz-profile.pdf" },
+        { id: "cand-5", name: "Noah Bennett", title: "On-Premise Sales Lead", email: "noah@example.com", location: "Phoenix, AZ", status: "Interviewing", skills: "Hospitality groups, route-to-market, activation", source: "Job board", owner: "Sam", lastTouch: "Today", resume: "noah-bennett-resume.docx" }
+      ],
       clients: [
         { id: "client-1", company: "Beverage Network", contact: "Dana Kim", roles: 4, urgency: "High", fees: 168000, next: "Submit shortlist" },
         { id: "client-2", company: "Cobalt Craft Beverages", contact: "Renee Hart", roles: 2, urgency: "Medium", fees: 92000, next: "Schedule intake" },
@@ -1221,6 +1226,10 @@
         { id: "pipe-5", role: "National Account Director", client: "Summit Retail Beverage", candidate: "Marcus Reed", stage: "Screening", value: 39000, owner: "Nina" }
       ],
       activities: [
+        ["M", "Maya moved Avery Morgan to client review.", "12 minutes ago"],
+        ["L", "Leo added interview notes for Priya Shah.", "45 minutes ago"],
+        ["S", "Sam created Beverage Network shortlist.", "Today"],
+        ["N", "Nina updated Summit Retail Beverage fee forecast.", "Yesterday"]
       ]
     };
 
@@ -1699,10 +1708,8 @@
         status: data.status,
         skills: data.skills,
         source: data.source,
-          candidate.resume
-      ? `<a href="${candidate.resume}" target="_blank">📄 View Resume</a>`
-      : "No Resume",
-        owner: data.owner || "Kevin","Bobby","Cyndi"
+        resume: resumeFile ? resumeFile.name : "",
+        owner: "Maya",
         lastTouch: "Just now"
       });
       state.activities.unshift(["M", `Maya added ${data.name} to the candidate CRM.`, "Just now"]);
